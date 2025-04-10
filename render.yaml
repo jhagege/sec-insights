@@ -2,7 +2,7 @@ previewsEnabled: true
 databases:
   - name: llama-app-db
     databaseName: llama_app_db
-    plan: standard
+    plan: basic-1gb
     previewPlan: starter
 
 services:

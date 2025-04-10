@@ -115,11 +115,11 @@ if settings.BACKEND_CORS_ORIGINS:
     # allow all origins
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[str(origin) for origin in origins],
-        allow_origin_regex="https://llama-app-frontend.*\.vercel\.app",
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        expose_headers=["*"]
     )
 
 app.include_router(api_router, prefix=settings.API_PREFIX)

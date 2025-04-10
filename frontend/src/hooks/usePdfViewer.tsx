@@ -4,7 +4,7 @@ import { usePdfFocus } from "~/context/pdf";
 
 import type { PdfFocusHandler as PdfFocusHandler } from "~/components/pdf-viewer/VirtualizedPdf";
 import React from "react";
-import { SecDocument } from "~/types/document";
+import type { SecDocument } from "~/types/document";
 
 export const zoomLevels = [
   "50%",
@@ -29,11 +29,11 @@ const usePDFViewer = (file: SecDocument) => {
 
   const pdfFocusRef = React.useRef<PdfFocusHandler | null>(null);
 
-  const goToPage = (page: number) => {
+  const goToPage = useCallback((page: number) => {
     if (pdfFocusRef.current) {
       pdfFocusRef.current.scrollToPage(page);
     }
-  };
+  }, [pdfFocusRef]);
 
   useEffect(() => {
     const activeDocumentId = pdfFocusState.documentId;
@@ -42,35 +42,11 @@ const usePDFViewer = (file: SecDocument) => {
         goToPage(pdfFocusState.pageNumber - 1);
       }
     }
-  }, [file, pdfFocusState]);
+  }, [file, pdfFocusState, goToPage]);
 
   const setCurrentPageNumber = useCallback((n: number) => {
     setScrolledIndex(n);
   }, []);
-
-  const handleZoomIn = useCallback(() => {
-    const nextLevel = zoomLevelIdx + 1;
-    if (nextLevel >= zoomLevels.length) {
-      return;
-    }
-    setZoomLevel(zoomLevels[nextLevel] || "100%");
-  }, [zoomLevelIdx, scrolledIndex, pdfFocusRef]);
-
-  const handleZoomOut = useCallback(() => {
-    const nextLevel = zoomLevelIdx - 1;
-    if (nextLevel < 0) {
-      return;
-    }
-    setZoomLevel(zoomLevels[nextLevel] || "100%");
-  }, [zoomLevelIdx, scrolledIndex, pdfFocusRef]);
-
-  const nextPage = () => {
-    goToPage(scrolledIndex + 1);
-  };
-
-  const prevPage = () => {
-    goToPage(scrolledIndex - 1);
-  };
 
   const toPercentPlusBase = (n: number) => {
     return `${100 + n * 100}%`;
@@ -86,8 +62,32 @@ const usePDFViewer = (file: SecDocument) => {
       }, 30);
       setZoomLevelIdx(newZoomLevelIdx);
     },
-    [scrolledIndex]
+    [scrolledIndex, scaleFit, goToPage]
   );
+
+  const handleZoomIn = useCallback(() => {
+    const nextLevel = zoomLevelIdx + 1;
+    if (nextLevel >= zoomLevels.length) {
+      return;
+    }
+    setZoomLevel(zoomLevels[nextLevel] || "100%");
+  }, [zoomLevelIdx, setZoomLevel]);
+
+  const handleZoomOut = useCallback(() => {
+    const nextLevel = zoomLevelIdx - 1;
+    if (nextLevel < 0) {
+      return;
+    }
+    setZoomLevel(zoomLevels[nextLevel] || "100%");
+  }, [zoomLevelIdx, setZoomLevel]);
+
+  const nextPage = () => {
+    goToPage(scrolledIndex + 1);
+  };
+
+  const prevPage = () => {
+    goToPage(scrolledIndex - 1);
+  };
 
   function percentToScale(percent: string): number {
     const number = parseInt(percent, 10);

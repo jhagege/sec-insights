@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { GroupBase } from "react-select";
-import Select from "react-select/dist/declarations/src/Select";
-import { SecDocument, DocumentType, Ticker } from "~/types/document";
+import { useState, useEffect, useRef, useCallback } from "react";
+import type { GroupBase } from "react-select";
+import type { default as Select } from "react-select/dist/declarations/src/Select";
+import type { SecDocument, DocumentType, Ticker } from "~/types/document";
 import type { SelectOption } from "~/types/selection";
 import {
   findDocumentById,
@@ -51,8 +51,9 @@ export const useDocumentSelector = () => {
   const [selectedDocumentType, setSelectedDocumentType] =
     useState<SelectOption | null>(null);
   const [selectedYear, setSelectedYear] = useState<SelectOption | null>(null);
+  const [shouldFocusCompanySelect, setShouldFocusCompanySelect] = useState(false);
 
-  const handleAddDocument = () => {
+  const handleAddDocument = useCallback(() => {
     if (selectedTicker && selectedDocumentType && selectedYear) {
       setSelectedDocuments((prevDocs = []) => {
         if (prevDocs.find((doc) => doc.id === selectedYear.value)) {
@@ -66,7 +67,7 @@ export const useDocumentSelector = () => {
       setSelectedYear(null);
       setShouldFocusCompanySelect(true);
     }
-  };
+  }, [selectedTicker, selectedDocumentType, selectedYear, availableDocuments, setSelectedDocuments, setShouldFocusCompanySelect]);
 
   const handleRemoveDocument = (documentIndex: number) => {
     setSelectedDocuments((prevDocs) =>
@@ -128,8 +129,6 @@ export const useDocumentSelector = () => {
     setFocusYear(true);
   };
 
-  const [shouldFocusCompanySelect, setShouldFocusCompanySelect] =
-    useState(false);
 
   const [focusYear, setFocusYear] = useState(false);
   const yearFocusRef = useRef<Select<

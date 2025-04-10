@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import type { Ticker } from "~/types/document";
 import { useCombobox } from "downshift";
@@ -34,22 +35,12 @@ export const DocumentSelectCombobox: React.FC<DocumentSelectComboboxProps> = ({
   setFocusState,
 }) => {
   const [focusRef, setFocus] = useFocus<HTMLInputElement>();
-
-  useEffect(() => {
-    if (shouldFocusTicker) {
-      setInputValue("");
-      setFocus();
-      setFocusState(false);
-    }
-  }, [shouldFocusTicker]);
-
   const [filteredDocuments, setFilteredDocuments] =
     useState<Ticker[]>(availableDocuments);
 
   useEffect(() => {
     setFilteredDocuments(availableDocuments);
   }, [availableDocuments]);
-
   const {
     isOpen,
     getMenuProps,
@@ -79,6 +70,15 @@ export const DocumentSelectCombobox: React.FC<DocumentSelectComboboxProps> = ({
       }
     },
   });
+
+  useEffect(() => {
+    if (shouldFocusTicker) {
+      setInputValue("");
+      setFocus();
+      setFocusState(false);
+    }
+  }, [shouldFocusTicker, setFocus, setFocusState, setInputValue]);
+
   return (
     <div className="flex-grow">
       <div className="flex flex-col gap-1 rounded-s bg-[#F7F7F7]">

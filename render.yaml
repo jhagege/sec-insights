@@ -2,7 +2,7 @@ previewsEnabled: true
 databases:
   - name: llama-app-db
     databaseName: llama_app_db
-    plan: pro
+    plan: standard
     previewPlan: starter
 
 services:
@@ -12,7 +12,7 @@ services:
   - type: web
     name: llama-app-backend
     runtime: docker
-    repo: https://github.com/run-llama/sec-insights.git
+    repo: https://github.com/jhagege/sec-insights.git
     region: oregon
     plan: standard
     rootDir: ./backend
@@ -37,7 +37,7 @@ services:
   - type: cron
     name: llama-app-cron
     runtime: docker
-    repo: https://github.com/run-llama/sec-insights.git
+    repo: https://github.com/jhagege/sec-insights.git
     region: oregon
     plan: standard
     rootDir: ./backend

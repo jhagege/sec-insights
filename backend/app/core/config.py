@@ -3,6 +3,9 @@ from enum import Enum
 from typing import List, Union, Optional, Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import AnyHttpUrl, EmailStr, field_validator
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables
 
 
 class AppEnvironment(str, Enum):
@@ -21,6 +24,7 @@ is_preview_env: bool = os.environ.get("IS_PREVIEW_ENV") == "true"
 model_config = SettingsConfigDict(
     env_prefix="PREVIEW_" if is_pull_request or is_preview_env else ""
 )
+
 
 class PreviewPrefixedSettings(BaseSettings):
     """

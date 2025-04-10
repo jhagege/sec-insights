@@ -145,6 +145,9 @@ def start():
         "app.main:app",
         host="0.0.0.0",
         port=8000,
-        reload=live_reload,
+        reload=False,
         workers=settings.UVICORN_WORKER_COUNT,
     )
+
+if __name__ == "__main__":
+    start()

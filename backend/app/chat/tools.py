@@ -1,4 +1,5 @@
 from typing import List, Iterator, cast
+from llama_index.llms.openai import OpenAI
 import logging
 
 # This is from the unofficial polygon.io client: https://polygon.readthedocs.io/
@@ -149,9 +150,12 @@ def get_api_query_engine_tool(
     polygon_io_tool = get_polygon_io_sec_tool(document)
     tool_metadata = get_tool_metadata_for_document(document)
     doc_title = build_title_for_document(document)
-    llm = Settings.llm.model_copy(
-        update={"callback_manager": callback_manager},
-        deep=True
+    llm = OpenAI(
+        temperature=0,
+        model=settings.OPENAI_CHAT_LLM_NAME,
+        streaming=True,
+        api_key=settings.OPENAI_API_KEY,
+        callback_manager=callback_manager,
     )
     agent = OpenAIAgent.from_tools(
         [polygon_io_tool],

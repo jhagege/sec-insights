@@ -17,7 +17,6 @@ import { backendClient } from "~/api/backend";
 import { AiOutlineArrowRight, AiTwotoneCalendar } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import { customReactSelectStyles } from "~/styles/react-select";
-import { useIntercom } from "react-use-intercom";
 import { LoadingSpinner } from "~/components/basics/Loading";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 
@@ -64,11 +63,6 @@ export const TitleAndDropdown = () => {
     sortedSelectedDocuments,
   } = useDocumentSelector();
 
-  const { boot } = useIntercom();
-
-  useEffect(() => {
-    boot();
-  }, []);
 
   return (
     <div className="landing-page-gradient-1 relative flex h-max w-screen flex-col items-center font-lora ">
@@ -128,6 +122,7 @@ export const TitleAndDropdown = () => {
               </div>
               <div className="flex-grow">
                 <Select
+                  instanceId="document-type-select"
                   openMenuOnFocus
                   ref={documentTypeFocusRef}
                   options={availableDocumentTypes}
@@ -150,6 +145,7 @@ export const TitleAndDropdown = () => {
               </div>
               <div className="flex-grow">
                 <Select
+                  instanceId="year-select"
                   openMenuOnFocus
                   ref={yearFocusRef}
                   options={sortedAvailableYears || []}

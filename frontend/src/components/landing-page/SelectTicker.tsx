@@ -58,6 +58,7 @@ export const DocumentSelectCombobox: React.FC<DocumentSelectComboboxProps> = ({
     getItemProps,
     setInputValue,
   } = useCombobox({
+    id: "ticker-selector", // Add stable ID to prevent hydration mismatch
     onInputValueChange({ inputValue }) {
       if (inputValue) {
         setFilteredDocuments(

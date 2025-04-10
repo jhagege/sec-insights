@@ -18,7 +18,7 @@ import {
   VERTICAL_GUTTER_SIZE_PX,
 } from "~/components/pdf-viewer/pdfDisplayConstants";
 
-import type { SecDocument as PdfDocument } from "~/types/document";
+import { SecDocument as PdfDocument } from "~/types/document";
 
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -38,7 +38,6 @@ pdfjsOptions.workerSrc =
 interface PageType {
   getViewport: (arg0: { scale: number }) => { width: number };
 }
-
 interface PdfType {
   numPages: number;
   getPage: (val: number) => Promise<PageType>;
@@ -52,7 +51,6 @@ interface PageRenderer {
   listWidth: number;
   setPageInView: (n: number) => void;
 }
-
 const PageRenderer: React.FC<PageRenderer> = ({
   file,
   pageNumber,
@@ -117,10 +115,34 @@ const PageRenderer: React.FC<PageRenderer> = ({
     showPageCanvas();
   }, [showPageCanvas]);
 
+  const onPageRenderSuccess = useCallback(
+    (page: { width: number }) => {
+      // console.log("triggering rerender for page", index);
+      showPageCanvas();
+      maybeHighlight();
+      // react-pdf absolutely pins the pdf into the upper left corner
+      // so when the scale changes and the width is smaller than the parent
+      // container, we need to use flex box to center the pdf.
+      //
+      // why not always center the pdf? when this condition is not true,
+      // display: flex breaks scrolling. not quite sure why.
+      if (listWidth > page.width) {
+        setShouldCenter(true);
+      } else {
+        setShouldCenter(false);
+      }
+    },
+    [showPageCanvas, listWidth]
+  );
+
   const documentFocused = pdfFocusState.documentId === file.id;
 
-  const maybeHighlight = useCallback(() => {
-    const debouncedHighlight = debounce(() => {
+  useEffect(() => {
+    maybeHighlight();
+  }, [documentFocused, inView]);
+
+  const maybeHighlight = useCallback(
+    debounce(() => {
       if (
         documentFocused &&
         pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
@@ -133,27 +155,9 @@ const PageRenderer: React.FC<PageRenderer> = ({
         );
         setIsHighlighted(true);
       }
-    }, 50);
-    debouncedHighlight();
-  }, [documentFocused, pdfFocusState.citation, pageNumber, isHighlighted]);
-
-  const onPageRenderSuccess = useCallback(
-    (page: { width: number }) => {
-      showPageCanvas();
-      maybeHighlight();
-      if (listWidth > page.width) {
-        setShouldCenter(true);
-      } else {
-        setShouldCenter(false);
-      }
-    },
-    [showPageCanvas, maybeHighlight, listWidth]
+    }, 50),
+    [pdfFocusState.citation?.snippet, pageNumber, isHighlighted]
   );
-
-  useEffect(() => {
-    maybeHighlight();
-  }, [documentFocused, inView, maybeHighlight]);
-
 
   return (
     <div
@@ -179,7 +183,6 @@ const PageRenderer: React.FC<PageRenderer> = ({
     </div>
   );
 };
-
 interface VirtualizedPDFProps {
   file: PdfDocument;
   scale: number;
@@ -187,7 +190,6 @@ interface VirtualizedPDFProps {
   setScaleFit: (n: number) => void;
   setNumPages: (n: number) => void;
 }
-
 export interface PdfFocusHandler {
   scrollToPage: (page: number) => void;
 }
@@ -217,7 +219,6 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
     function onDocumentLoadSuccess(nextPdf: PdfType) {
       setPdf(nextPdf);
     }
-
     function getPageHeight(): number {
       const actualHeight = (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
       return actualHeight;
@@ -227,7 +228,6 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
       if (!pdf) {
         return;
       }
-
       async function loadFirstPage() {
         if (pdf) {
           await pdf
@@ -245,7 +245,6 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
             );
         }
       }
-
       loadFirstPage().catch(() => console.log("page load error"));
       setNumPages(pdf.numPages);
     }, [pdf, setNumPages, setScaleFit, newWidthPx]);

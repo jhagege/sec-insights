@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React from "react";
-import Image from 'next/image'
-
 import AnimateSvg from "./AnimateSvg";
 import useScrollBreakpoint from "~/hooks/utils/useScrollBreakpoint";
 
@@ -39,30 +37,25 @@ export const MarketingSection = () => {
             breakpoint={chatBreakpoint}
             increment={80}
             svgs={[
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-1.svg"
-                alt="Chat illustration 1"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-2.svg"
-                alt="Chat illustration 2"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-3.svg"
-                alt="Chat illustration 3"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-4.svg"
-                alt="Chat illustration 4"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-5.svg"
-                alt="Chat illustration 5"
               />,
             ]}
           />
@@ -98,20 +91,17 @@ export const MarketingSection = () => {
             breakpoint={multiDocBreakpoint}
             increment={150}
             svgs={[
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="multi-doc-4.svg"
-                alt="Chat illustration 4"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="multi-doc-2.svg"
-                alt="Chat illustration 2"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="multi-doc-3.svg"
-                alt="Chat illustration 1"
               />,
             ]}
           />
@@ -137,20 +127,17 @@ export const MarketingSection = () => {
             breakpoint={highlightBreakpoint}
             increment={150}
             svgs={[
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="highlight-4.svg"
-                alt="Chat illustration 4"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="highlight-2.svg"
-                alt="Chat illustration 2"
               />,
-              <Image
+              <img
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="highlight-1.svg"
-                alt="Chat illustration 1"
               />,
             ]}
           />

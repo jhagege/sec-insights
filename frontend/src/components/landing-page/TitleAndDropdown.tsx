@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import Image from 'next/image'
+import React, { useEffect, useState } from "react";
+
 import { FiTrash2 } from "react-icons/fi";
 import GitHubButton from "react-github-btn";
 
@@ -70,7 +70,7 @@ export const TitleAndDropdown = () => {
         <a href="https://www.llamaindex.ai/" target="_blank">
           <button className="flex items-center justify-center font-nunito text-lg font-bold ">
             Built by LlamaIndex
-            <Image src="logo-black.svg" className="mx-2 rounded-lg" width={40} alt="Logo black" />
+            <img src="logo-black.svg" className="mx-2 rounded-lg" width={40} />
           </button>
         </a>
       </div>

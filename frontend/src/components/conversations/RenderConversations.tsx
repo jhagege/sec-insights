@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MESSAGE_STATUS, ROLE } from "~/types/conversation";
-import type { Citation, Message, MessageSubProcess, SubQuestion } from "~/types/conversation";
+import { MESSAGE_STATUS, MessageSubProcess, ROLE } from "~/types/conversation";
+import type { Citation } from "~/types/conversation";
+import type { Message, SubQuestion } from "~/types/conversation";
 import { LoadingSpinner } from "~/components/basics/Loading";
 import { PiCaretDownBold } from "react-icons/pi";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 
 import { usePdfFocus } from "~/context/pdf";
-import { AiFillExclamationCircle } from "react-icons/ai";
-import type { SecDocument } from "~/types/document";
+import { AiFillExclamationCircle, AiOutlineLink } from "react-icons/ai";
+import { SecDocument } from "~/types/document";
 import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
 

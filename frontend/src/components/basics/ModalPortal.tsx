@@ -1,8 +1,8 @@
+import React from "react";
 import ReactDOM from "react-dom";
-import type { ReactNode } from "react";
 
 interface ModalPortalProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 const ModalPortal = ({ children }: ModalPortalProps) => {

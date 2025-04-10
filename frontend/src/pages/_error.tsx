@@ -1,4 +1,4 @@
-import type { NextPageContext } from "next";
+import { NextPageContext } from "next";
 import React from "react";
 
 interface ErrorProps {

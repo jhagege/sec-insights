@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { PdfFocusProvider } from "~/context/pdf";
 
 import type { ChangeEvent } from "react";
 import DisplayMultiplePdfs from "~/components/pdf-viewer/DisplayMultiplePdfs";
 import { backendUrl } from "src/config";
-import { MESSAGE_STATUS } from "~/types/conversation";
-import type { Message } from "~/types/conversation";
+import { MESSAGE_STATUS, Message } from "~/types/conversation";
 import useMessages from "~/hooks/useMessages";
 import { backendClient } from "~/api/backend";
 import { RenderConversations as RenderConversations } from "~/components/conversations/RenderConversations";
 import { BiArrowBack } from "react-icons/bi";
-import type { SecDocument } from "~/types/document";
+import { SecDocument } from "~/types/document";
 import { FiShare } from "react-icons/fi";
 import ShareLinkModal from "~/components/modals/ShareLinkModal";
 import { BsArrowUpCircle } from "react-icons/bs";
@@ -26,7 +25,7 @@ export default function Conversation() {
   const { shutdown } = useIntercom();
   useEffect(() => {
     shutdown();
-  }, [shutdown]);
+  }, []);
 
   const { isOpen: isShareModalOpen, toggleModal: toggleShareModal } =
     useModal();
@@ -67,7 +66,7 @@ export default function Conversation() {
   }, [conversationId, setMessages]);
 
   // Keeping this in this file for now because this will be subject to change
-  const submit = useCallback(() => {
+  const submit = () => {
     if (!userMessage || !conversationId) {
       return;
     }
@@ -95,7 +94,7 @@ export default function Conversation() {
         setIsMessagePending(false);
       }
     };
-  }, [conversationId, userMessage, userSendMessage, systemSendMessage]);
+  };
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setUserMessage(event.target.value);
   };
@@ -121,7 +120,7 @@ export default function Conversation() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [submit, isMessagePending]);
+  }, [submit]);
 
   const setSuggestedMessage = (text: string) => {
     setUserMessage(text);
